@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "731306097225",
+    "project_id": "myghmc-41a1b",
+    "storage_bucket": "myghmc-41a1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:731306097225:android:a178f6572b651e3920dd98",
+        "android_client_info": {
+          "package_name": "com.example.myghmc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "731306097225-ttsml2e59cj9r9e2lu3aoev3tcol67ci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6E-_dkrCDCE3HWgj4cD5ABaovoQTSmBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "731306097225-ttsml2e59cj9r9e2lu3aoev3tcol67ci.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

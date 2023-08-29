@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MyGhmc</string>
+    <string name="faqs">FAQs</string>
+    <string name="driver">Driver</string>
+    <string name="user">User</string>
+    <string name="login">Login</string>
+    <string name="open">Open navigation drawer</string>
+    <string name="close">Close navigation drawer</string>
+    <string name="welcome_to_ghmc_waste_management_collection_portal">Welcome to GHMC Waste Management Collection Portal</string>
+    <string name="profile">Profile</string>
+    <string name="hello_user_welcome_to_driver_dashboard">Hello user, Welcome To Driver Dashboard</string>
+    <string name="scanned_vs_un_scanned_houses_by_area">Scanned vs Un-scanned Houses by Area</string>
+    <string name="home">Home</string>
+    <string name="scanner">Scanner</string>
+    <string name="check_in">Check In</string>
+    <string name="check_out">Check Out</string>
+</resources>
