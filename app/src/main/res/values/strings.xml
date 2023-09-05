@@ -14,4 +14,5 @@
     <string name="scanner">Scanner</string>
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
+    <string name="recovery_password">Recovery Password</string>
 </resources>

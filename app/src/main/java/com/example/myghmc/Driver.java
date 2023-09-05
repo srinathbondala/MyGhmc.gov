@@ -2,7 +2,10 @@ package com.example.myghmc;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
+import static com.example.myghmc.home_login.ddp;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -23,13 +26,24 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Objects;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Driver extends AppCompatActivity implements View.OnClickListener{
 
     private DrawerLayout drawerLayout;
     private ImageView openDrawerButton,home_icon,scan_icon,profile_icon;
-    private TextView home,scan,profile;
+    private TextView home,scan,profile,error;
     String demo1;
 
     @Override
@@ -45,6 +59,7 @@ public class Driver extends AppCompatActivity implements View.OnClickListener{
         home_icon = (ImageView)findViewById(R.id.driver_house_ind1);
         scan_icon=(ImageView)findViewById(R.id.driver_scanner_ind1);
         profile_icon=(ImageView)findViewById(R.id.driver_profile_ind1);
+        error=(TextView) findViewById(R.id.error);
         openDrawerButton.setOnClickListener(this);
         home_icon.setOnClickListener(this);
         scan_icon.setOnClickListener(this);
@@ -138,39 +153,48 @@ public class Driver extends AppCompatActivity implements View.OnClickListener{
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
                 String scannedData = result.getContents();
-                interpretScannedData(scannedData);
+                try {
+                    interpretScannedData(scannedData);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    private void interpretScannedData(String data) {
-        if (data.startsWith("http://") || data.startsWith("https://")) {
-            // Handle URL
-            handleURL(data);
-        } else if (data.startsWith("BEGIN:VCARD")) {
-            // Handle vCard (contact information)
-            handleVCard(data);
-        } else {
-            // Handle as plain text
-            handlePlainText(data);
+    private void interpretScannedData(String data) throws JSONException {
+        try{
+        JSONObject jsonObj = new JSONObject(data);
+        String base="http://192.168.238.199:5000/";
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(base).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofitapi Retrofitapi = retrofit.create(retrofitapi.class);
+        //jsonObj.getString("userId"),jsonObj.getString("name"),jsonObj.getString("phoneNumber"),jsonObj.getInt("zone"),jsonObj.getInt("circle"),jsonObj.getInt("ward"),jsonObj.getString("timestamp")
+//            HashMap<String,String> map=new HashMap<String,String>();
+//            map.put("userId",jsonObj.getString("userId"));
+//            map.put("driverSat",ddp.getSat());
+        driver_scanner_data dsd = new driver_scanner_data(jsonObj.getString("userId"),ddp.getSat());
+        Call<ResponseBody> call=Retrofitapi.enterData(dsd);
+          //  Call<ResponseBody> call = Retrofitapi.enterData1(map);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                error.setText(response.message());
+                Toast.makeText(Driver.this, response.message(), Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(Driver.this, "Technical Error. Please try again later", LENGTH_SHORT).show();
+                error.setText(t.toString());
+            }
+        });
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(Driver.this, ""+e, LENGTH_SHORT).show();
         }
     }
-
-    private void handleURL(String url) {
-        Toast.makeText(this, "Scanned URL: " + url, Toast.LENGTH_LONG).show();
-        // startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-    }
-
-    private void handleVCard(String vCard) {
-        Toast.makeText(this, "Scanned vCard: " + vCard, Toast.LENGTH_LONG).show();
-    }
-
-    private void handlePlainText(String text) {
-        Toast.makeText(this, "Scanned Text: " + text, Toast.LENGTH_LONG).show();
-    }
-
 
     @Override
     public void onBackPressed() {

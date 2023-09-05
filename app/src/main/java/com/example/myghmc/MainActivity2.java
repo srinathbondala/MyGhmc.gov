@@ -106,6 +106,7 @@ public class MainActivity2 extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                 if (task.isSuccessful()) {
                                                     FirebaseUser user = mAuth.getCurrentUser();
+
                                                     Toast.makeText(getApplicationContext(), "Registered Successfully!", Toast.LENGTH_SHORT).show();
                                                 } else {
                                                     Toast.makeText(getApplicationContext(), "Registration Failed!", Toast.LENGTH_SHORT).show();
