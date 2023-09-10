@@ -15,4 +15,6 @@
     <string name="check_in">Check In</string>
     <string name="check_out">Check Out</string>
     <string name="recovery_password">Recovery Password</string>
+    <string name="report_issue">Report Issue</string>
+    <string name="track_a_vehicle">Track a Vehicle</string>
 </resources>

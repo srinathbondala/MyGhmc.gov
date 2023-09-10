@@ -14,9 +14,16 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        Properties properties = new Properties()
+//        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+//
+//        buildConfigField "String","API_KEY","\"${properties.getProperty("API_KEY")}\""
     }
     buildTypes {
+        debug{
+            buildConfigField "String","API_KEY","\"http://192.168.238.199:5000/\""
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

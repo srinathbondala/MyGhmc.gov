@@ -19,6 +19,9 @@
         android:theme="@style/Theme.MyGhmc"
         tools:targetApi="31">
         <activity
+            android:name=".house_Details"
+            android:exported="false" />
+        <activity
             android:name=".home_login"
             android:exported="false" />
         <activity

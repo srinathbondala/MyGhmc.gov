@@ -84,57 +84,58 @@ public class MainActivity2 extends AppCompatActivity {
             p.setCanceledOnTouchOutside(false);
             p.show();
             String driver_id="DRIVER00";
-            driver_data dd = new driver_data(sname,sphno,ssfino,ssat,svechno,driver_id,spass);
-            root.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.hasChild(ssat))
-                    {
-                        Toast.makeText(MainActivity2.this, "User already exist", Toast.LENGTH_SHORT).show();
-                        p.dismiss();
-                    }
-                    else {
-                        if(search_for_user_sfi(ssfino)) {
-                            root.child(ssat).setValue(dd).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        p.dismiss();
-                                        String mail=ssat+"@gmail.com";
-                                        mAuth.createUserWithEmailAndPassword(mail,spass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                                if (task.isSuccessful()) {
-                                                    FirebaseUser user = mAuth.getCurrentUser();
-
-                                                    Toast.makeText(getApplicationContext(), "Registered Successfully!", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    Toast.makeText(getApplicationContext(), "Registration Failed!", Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-                                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                                        startActivity(i);
-                                        finish();
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), "" + task.getException(), Toast.LENGTH_SHORT).show();
-                                        p.dismiss();
-                                    }
-                                }
-                            });
-                        }
-                        else {
-                            p.dismiss();
-                            Toast.makeText(MainActivity2.this, "User already exist", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+//            driver_data dd = new driver_data(sname,sphno,ssfino,ssat,svechno,driver_id,spass);
+//            //working on it
+//            root.addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    if(snapshot.hasChild(ssat))
+//                    {
+//                        Toast.makeText(MainActivity2.this, "User already exist", Toast.LENGTH_SHORT).show();
+//                        p.dismiss();
+//                    }
+//                    else {
+//                        if(search_for_user_sfi(ssfino)) {
+//                            root.child(ssat).setValue(dd).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<Void> task) {
+//                                    if (task.isSuccessful()) {
+//                                        p.dismiss();
+//                                        String mail=ssat+"@gmail.com";
+//                                        mAuth.createUserWithEmailAndPassword(mail,spass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<AuthResult> task) {
+//                                                if (task.isSuccessful()) {
+//                                                    FirebaseUser user = mAuth.getCurrentUser();
+//
+//                                                    Toast.makeText(getApplicationContext(), "Registered Successfully!", Toast.LENGTH_SHORT).show();
+//                                                } else {
+//                                                    Toast.makeText(getApplicationContext(), "Registration Failed!", Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            }
+//                                        });
+//                                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+//                                        startActivity(i);
+//                                        finish();
+//                                    } else {
+//                                        Toast.makeText(getApplicationContext(), "" + task.getException(), Toast.LENGTH_SHORT).show();
+//                                        p.dismiss();
+//                                    }
+//                                }
+//                            });
+//                        }
+//                        else {
+//                            p.dismiss();
+//                            Toast.makeText(MainActivity2.this, "User already exist", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
         }
     }
 
@@ -144,12 +145,12 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    driver_data i1 = ds.getValue(driver_data.class);
+                    ApiService.driver_profile_response i1 = ds.getValue(ApiService.driver_profile_response.class);
                     assert i1 != null;
-                    if(Objects.equals(i1.getSfi_no(), ssfino)) {
-                        ret[0] = false;
-                        break;
-                    }
+                   // if(Objects.equals(i1.getSfi_no(), ssfino)) {
+                     //   ret[0] = false;
+                       // break;
+                    //}
                 }
             }
             @Override
