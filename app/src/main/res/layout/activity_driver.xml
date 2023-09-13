@@ -141,7 +141,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <!-- Custom Navigation Drawer -->
     <LinearLayout
         android:layout_width="250dp"

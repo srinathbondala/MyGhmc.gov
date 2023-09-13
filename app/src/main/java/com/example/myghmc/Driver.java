@@ -12,7 +12,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,8 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -41,17 +45,20 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Driver extends AppCompatActivity implements View.OnClickListener{
+public class Driver extends AppCompatActivity implements View.OnClickListener,BottomSheetListener{
 
     private DrawerLayout drawerLayout;
     private ImageView openDrawerButton,home_icon,scan_icon,profile_icon;
     private TextView home,scan,profile;
-    String demo1;
+    BottomSheetBehavior bottomSheetBehavior;
+    Button drop;
+    private String demo1,scannedData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_driver);
+        try{
         Objects.requireNonNull(getSupportActionBar()).hide();
         drawerLayout = findViewById(R.id.drawer_layout1);
         openDrawerButton = findViewById(R.id.open_drawer_button);
@@ -69,7 +76,9 @@ public class Driver extends AppCompatActivity implements View.OnClickListener{
         scan.setOnClickListener(this);
         profile.setOnClickListener(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame1, new homefragment()).commit();
-        demo1="home";
+        demo1="home";}
+        catch (Exception e)
+        {}
     }
 
     @Override
@@ -153,10 +162,11 @@ public class Driver extends AppCompatActivity implements View.OnClickListener{
             if (result.getContents() == null) {
                 Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
             } else {
-                String scannedData = result.getContents();
+                scannedData = result.getContents();
                 try {
-                    interpretScannedData(scannedData);
-                } catch (JSONException e) {
+                    //interpretScannedData(scannedData);
+                    call_bottom(scannedData);
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -164,6 +174,12 @@ public class Driver extends AppCompatActivity implements View.OnClickListener{
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    private void call_bottom(String scannedData) {
+        CustomBottomSheetDialogFragment bottomSheet = new CustomBottomSheetDialogFragment();
+        bottomSheet.show(getSupportFragmentManager(), bottomSheet.getTag());
+    }
+
     private void interpretScannedData(String data) throws JSONException {
         JSONObject jsonObj = new JSONObject(data);
             String BASE_URL = BuildConfig.API_KEY;
@@ -174,28 +190,20 @@ public class Driver extends AppCompatActivity implements View.OnClickListener{
 
             retrofitapi retro = retrofit.create(retrofitapi.class);
             retrofitapi.driver_scanner_data1 request = new retrofitapi.driver_scanner_data1();
-            request.userId=ddp.getSat();
-            request.driverSat =jsonObj.getString("userId") ;
-            retro.enterData(request).enqueue(new Callback<retrofitapi.driver_scanner_data_out>() {
+            request.userId=jsonObj.getString("userId");
+            request.driverSat =ddp.sat;
+            retro.enterData(request).enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<retrofitapi.driver_scanner_data_out> call, Response<retrofitapi.driver_scanner_data_out> response) {
-                    if (response.isSuccessful()) {
-                        String message = response.body().message;
-                        if(Objects.equals(message, "success")) {
+                public void onResponse(Call<Void> call, Response<Void> response) {
                             Toast.makeText(Driver.this, "Successfully Registered", Toast.LENGTH_LONG).show();
-                         }
-                        else {
-                            Toast.makeText(Driver.this, message, LENGTH_SHORT).show();
-                        }
-                    }
                 }
                 @Override
-                public void onFailure(Call<retrofitapi.driver_scanner_data_out> call, Throwable t) {
+                public void onFailure(Call<Void> call, Throwable t) {
                     Toast.makeText(Driver.this, "Technical Error. Please try again later", LENGTH_SHORT).show();
+                    Log.e("msg",t.getMessage());
                 }
             });
     }
-
     @Override
     public void onBackPressed() {
         if(!Objects.equals(demo1, "home")) {
@@ -223,6 +231,19 @@ public class Driver extends AppCompatActivity implements View.OnClickListener{
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
+        }
+    }
+
+    @Override
+    public void onBottomSheetDismissed() {
+        dosome();
+    }
+
+    private void dosome() {
+        try {
+            interpretScannedData(scannedData);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
         }
     }
 }

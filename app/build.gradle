@@ -14,15 +14,10 @@ android {
         versionCode 1
         versionName "1.0"
 
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//        Properties properties = new Properties()
-//        properties.load(project.rootProject.file("local.properties").newDataInputStream())
-//
-//        buildConfigField "String","API_KEY","\"${properties.getProperty("API_KEY")}\""
     }
     buildTypes {
         debug{
-            buildConfigField "String","API_KEY","\"http://192.168.238.199:5000/\""
+            buildConfigField "String","API_KEY","\"http://192.168.63.199:5000/\""
         }
         release {
             minifyEnabled false
@@ -49,5 +44,6 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.68'
     implementation 'com.squareup.retrofit2:retrofit:2.0.2'
+    implementation 'com.google.android.material:material:latest_version'
     implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
 }

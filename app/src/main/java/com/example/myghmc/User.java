@@ -37,7 +37,7 @@ public class User extends AppCompatActivity implements View.OnClickListener{
         track_user.setOnClickListener(this);
         profile.setOnClickListener(this);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_content_frame1, new homefragment()).commit();
+                .replace(R.id.main_content_frame1,  new user_home_fragment()).commit();
         demo="home";
     }
 

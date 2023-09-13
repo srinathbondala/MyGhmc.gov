@@ -252,33 +252,5 @@ public class home_login extends AppCompatActivity implements View.OnClickListene
                 p.dismiss();
             }
         });
-//        apiService.driver_profile_nolist(request).enqueue(new Callback<ApiService.driver_profile_response>() {
-//            @Override
-//            public void onResponse(Call<ApiService.driver_profile_response> call, Response<ApiService.driver_profile_response> response) {
-//                try{
-//                    if(response.isSuccessful())
-//                    {
-//                        ddp=response.body();
-//                        Toast.makeText(home_login.this, "data fetched successfully", Toast.LENGTH_SHORT).show();
-//                    }
-//                    else {
-//                        Toast.makeText(home_login.this, "data not found", Toast.LENGTH_SHORT).show();
-//                    }
-//                    p.dismiss();
-//                }
-//                catch (Exception e){
-//                    Toast.makeText(home_login.this, "Error occurred while taking data", Toast.LENGTH_SHORT).show();
-//                    Log.e("msg",e.getMessage());
-//                    p.dismiss();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ApiService.driver_profile_response> call, Throwable t) {
-//                Toast.makeText(home_login.this, "Error occurred while taking data", Toast.LENGTH_SHORT).show();
-//                Log.e("msg",t.getMessage());
-//                p.dismiss();
-//            }
-//        });
     }
 }

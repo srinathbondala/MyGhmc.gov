@@ -29,6 +29,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:paddingBottom="10dp">
 
                 <Button
@@ -42,12 +43,26 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
 
+                <TextView
+                    android:id="@+id/timer"
+                    android:layout_width="200dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/chk_in"
+                    app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <CalendarView
                 android:id="@+id/select_calender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
                 android:background="@drawable/square"
                 android:dateTextAppearance="@style/CustomTextAppearance"
                 android:elevation="4dp"
@@ -58,7 +73,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:background="@color/white"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp">
 
@@ -66,7 +80,7 @@
                     android:id="@+id/card1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white">
+                    android:background="@drawable/pink_back">
 
                     <ImageView
                         android:id="@+id/imageView4"
@@ -98,7 +112,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/white_back" />
+                        app:srcCompat="@drawable/pink_back" />
 
                     <TextView
                         android:id="@+id/textView19"
@@ -128,7 +142,7 @@
                     android:id="@+id/card2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white">
+                    android:background="@drawable/pink_back">
 
                     <ImageView
                         android:id="@+id/imageView6"
@@ -161,7 +175,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/white_back" />
+                        app:srcCompat="@drawable/pink_back" />
 
                     <TextView
                         android:id="@+id/textView20"
@@ -192,7 +206,7 @@
                     android:id="@+id/card3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white">
+                    android:background="@drawable/pink_back">
 
                     <ImageView
                         android:id="@+id/imageView8"
@@ -225,7 +239,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/white_back" />
+                        app:srcCompat="@drawable/pink_back" />
 
                     <TextView
                         android:id="@+id/textView21"
