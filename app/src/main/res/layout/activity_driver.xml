@@ -9,13 +9,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#C5C7C9">
+        android:background="#CAC1EA">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout2"
             android:layout_width="405dp"
             android:layout_height="0dp"
-            android:background="@drawable/background_driver"
+            android:background="@drawable/back_driver_update"
             app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
                 android:id="@+id/relativeLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="20dp"
+                android:background="@drawable/pink_back"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -74,7 +74,9 @@
                 android:id="@+id/main_content_frame1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="33dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +98,6 @@
             android:id="@+id/bottomNavigationView"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            android:background="#C5C7C9"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,27 +105,28 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="#CAC1EA">
 
                 <ImageView
                     android:id="@+id/driver_scanner_ind1"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
+                    android:layout_width="50dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="60dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/driver_house_ind1"
-                    app:layout_constraintStart_toEndOf="@+id/driver_profile_ind1"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
+                    app:srcCompat="@drawable/img_6" />
 
                 <ImageView
                     android:id="@+id/driver_house_ind1"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
-                    android:layout_marginEnd="60dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/driver_scanner_ind1"
+                    app:layout_constraintStart_toEndOf="@+id/driver_profile_ind1"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/ic_menu_mylocation" />
+                    app:srcCompat="@drawable/img_5" />
 
                 <ImageView
                     android:id="@+id/driver_profile_ind1"
@@ -134,7 +136,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+                    app:srcCompat="@drawable/img_7" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.bottomnavigation.BottomNavigationView>
@@ -152,7 +154,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/back2">
+            android:background="@drawable/button_back">
 
             <ImageView
                 android:id="@+id/driver_imageView"
@@ -172,7 +174,7 @@
                 android:background="#00ddff"
                 android:gravity="center"
                 android:text="@string/home"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/driver_imageView" />
@@ -184,7 +186,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="@string/scanner"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/driver_home_Idx" />
@@ -196,7 +198,7 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="@string/profile"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/driver_scanner" />

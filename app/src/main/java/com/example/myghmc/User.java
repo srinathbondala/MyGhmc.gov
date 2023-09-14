@@ -107,7 +107,7 @@ public class User extends AppCompatActivity implements View.OnClickListener{
     public void onBackPressed() {
         if(!Objects.equals(demo, "home")) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_content_frame1, new homefragment())
+                    .replace(R.id.main_content_frame1, new user_home_fragment())
                     .commit();
             demo="home";
         }
