@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,9 +26,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.GravityCompat;
-import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -35,10 +39,8 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.Objects;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,7 +55,8 @@ public class Driver extends AppCompatActivity implements View.OnClickListener,Bo
     BottomSheetBehavior bottomSheetBehavior;
     Button drop;
     private String demo1,scannedData;
-
+    public static JSONObject jsonObj1;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +79,8 @@ public class Driver extends AppCompatActivity implements View.OnClickListener,Bo
         scan.setOnClickListener(this);
         profile.setOnClickListener(this);
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content_frame1, new homefragment()).commit();
-        demo1="home";}
+        demo1="home";
+        }
         catch (Exception e)
         {}
     }
@@ -88,15 +92,17 @@ public class Driver extends AppCompatActivity implements View.OnClickListener,Bo
         }
         if(view == home || view==home_icon)
         {
-            assert home != null;
-            home.setBackgroundColor(Color.parseColor("#00ddff"));
-            scan.setBackgroundColor(0);
-            profile.setBackgroundColor(0);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_content_frame1, new homefragment())
-                    .commit();
+            if (!Objects.equals(demo1, "home")) {
+                assert home != null;
+                home.setBackgroundColor(Color.parseColor("#00ddff"));
+                scan.setBackgroundColor(0);
+                profile.setBackgroundColor(0);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.swipe_in_right, R.anim.swipe_out_left);
+                transaction.replace(R.id.main_content_frame1, new homefragment()).addToBackStack(null).commit();
+                demo1="home";
+            }
             drawerLayout.closeDrawer(GravityCompat.START);
-            demo1="home";
         }
         if(view==scan || view==scan_icon)
         {
@@ -110,18 +116,19 @@ public class Driver extends AppCompatActivity implements View.OnClickListener,Bo
         }
         if(view==profile || view==profile_icon)
         {
-            assert profile != null;
-            profile.setBackgroundColor(Color.parseColor("#00ddff"));
-            scan.setBackgroundColor(0);
-            home.setBackgroundColor(0);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_content_frame1, new profilefragment())
-                    .commit();
+            if (!Objects.equals(demo1, "profile")) {
+                assert profile != null;
+                profile.setBackgroundColor(Color.parseColor("#00ddff"));
+                scan.setBackgroundColor(0);
+                home.setBackgroundColor(0);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.swipe_in_left, R.anim.swipe_out_right);
+                transaction.replace(R.id.main_content_frame1, new profilefragment()).addToBackStack(null).commit();
+                demo1 = "profile";
+            }
             drawerLayout.closeDrawer(GravityCompat.START);
-            demo1="profile";
         }
     }
-
     private static final int CAMERA_REQUEST_CODE = 100;
 
     private void requestCameraPermission() {
@@ -175,9 +182,10 @@ public class Driver extends AppCompatActivity implements View.OnClickListener,Bo
         }
     }
 
-    private void call_bottom(String scannedData) {
+    private void call_bottom(String scannedData) throws JSONException {
         CustomBottomSheetDialogFragment bottomSheet = new CustomBottomSheetDialogFragment();
         bottomSheet.show(getSupportFragmentManager(), bottomSheet.getTag());
+        //initialize();
     }
 
     private void interpretScannedData(String data) throws JSONException {
@@ -207,28 +215,24 @@ public class Driver extends AppCompatActivity implements View.OnClickListener,Bo
     @Override
     public void onBackPressed() {
         if(!Objects.equals(demo1, "home")) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_content_frame1, new homefragment())
-                    .commit();
+            FragmentTransaction transaction=getSupportFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(R.anim.swipe_in_right, R.anim.swipe_out_left);
+            transaction.replace(R.id.main_content_frame1, new homefragment()).commit();
             demo1="home";
         }
         else
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(Driver.this);
-
-            builder.setMessage("Do you want to Go back to login ?");
-
+            builder.setMessage("Do you want to Logout?");
             builder.setTitle("Alert !");
-
             builder.setCancelable(false);
             builder.setPositiveButton("Yes", (DialogInterface.OnClickListener) (dialog, which) -> {
-                finish();
+            finish();
+            overridePendingTransition(R.anim.swipe_in_left, R.anim.swipe_out_right);
             });
-
             builder.setNegativeButton("No", (DialogInterface.OnClickListener) (dialog, which) -> {
                 dialog.cancel();
             });
-
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
         }
@@ -237,6 +241,12 @@ public class Driver extends AppCompatActivity implements View.OnClickListener,Bo
     @Override
     public void onBottomSheetDismissed() {
         dosome();
+    }
+
+    @Override
+    public void initialize() throws JSONException {
+        jsonObj1 = new JSONObject(scannedData);
+
     }
 
     private void dosome() {

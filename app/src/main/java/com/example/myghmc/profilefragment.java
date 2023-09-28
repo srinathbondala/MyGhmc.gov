@@ -5,12 +5,14 @@ import static com.example.myghmc.home_login.driver_dat;
 import static com.example.myghmc.home_login.sat_glob;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +30,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class profilefragment extends Fragment {
     private TextView name,sfi,sat1,ph_no,vh_no,driver_id;
-    ApiService.driver_profile_response dp;
+    private ApiService.driver_profile_response dp;
+    private Button logout;
     ProgressDialog p;
     @Nullable
     @Override
@@ -40,6 +43,7 @@ public class profilefragment extends Fragment {
         ph_no = view.findViewById(R.id.phno_prof);
         vh_no = view.findViewById(R.id.VehicleNo_prof);
         driver_id = view.findViewById(R.id.driver_id_prof);
+        logout=view.findViewById(R.id.logout);
         p = new ProgressDialog(view.getContext());
         p.setMessage("Please wait Loading");
         p.setTitle("Profile");
@@ -112,6 +116,20 @@ public class profilefragment extends Fragment {
             Toast.makeText(view.getContext(), "error occurred while fetching data", Toast.LENGTH_SHORT).show();
             p.dismiss();
         }
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view1) {
+                try {
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                         getActivity().overridePendingTransition(R.anim.swipe_in_left, R.anim.swipe_out_right);
+                    }
+                }catch (Exception e)
+                {
+                    Toast.makeText(view.getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         return view;
     }
 }

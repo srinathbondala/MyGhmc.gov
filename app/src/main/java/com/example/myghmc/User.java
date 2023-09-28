@@ -25,7 +25,7 @@ public class User extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_user);
         getSupportActionBar().hide();
 
-        drawerLayout = findViewById(R.id.drawer_layout1);
+        drawerLayout = findViewById(R.id.drawer_layout2);
         openDrawerButton = findViewById(R.id.open_drawer_button);
         home = (TextView)findViewById(R.id.driver_home_Idx);
         scan=(TextView)findViewById(R.id.driver_scanner);

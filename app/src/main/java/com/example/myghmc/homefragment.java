@@ -6,6 +6,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -14,13 +16,17 @@ import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import java.util.concurrent.TimeUnit;
@@ -28,11 +34,12 @@ import java.util.concurrent.TimeUnit;
 public class homefragment extends Fragment implements View.OnClickListener{
     private ConstraintLayout card1,card2,card3;
     private Button check_in;
-    private TextView timer;
+    private TextView timer,time_show;
     private CalendarView calendarView;
     private TimerService timerService;
     private boolean isBound = false;
     private Handler updateHandler;
+    private LinearLayout hiddenLayout;
     View k;
 
     @Nullable
@@ -45,14 +52,20 @@ public class homefragment extends Fragment implements View.OnClickListener{
         card3 = view.findViewById(R.id.card3);
         check_in = view.findViewById(R.id.chk_in);
         timer=view.findViewById(R.id.timer);
+        time_show=view.findViewById(R.id.time_show);
         calendarView = view.findViewById(R.id.select_calender);
-        updateHandler = new Handler();
-        card1.setOnClickListener(this);
-        card2.setOnClickListener(this);
-        card3.setOnClickListener(this);
-        check_in.setOnClickListener(this);
-        Intent intent = new Intent(view.getContext(), TimerService.class);
-        view.getContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        hiddenLayout = view.findViewById(R.id.dropdown_time);
+        hiddenLayout.setVisibility(View.GONE);
+        try {
+            updateHandler = new Handler();
+            card1.setOnClickListener(this);
+            card2.setOnClickListener(this);
+            card3.setOnClickListener(this);
+            check_in.setOnClickListener(this);
+            Intent intent = new Intent(view.getContext(), TimerService.class);
+            view.getContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        }catch (Exception e)
+        {}
         return view;
     }
 
@@ -61,21 +74,33 @@ public class homefragment extends Fragment implements View.OnClickListener{
         Intent i = new Intent(view.getContext(),house_Details.class);
         if(view==card1) {
             Toast.makeText(view.getContext(), "Total houses 200", Toast.LENGTH_SHORT).show();
-            view.getContext().startActivity(i, ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext()).toBundle());
+            startActivity(i);
+            getActivity().overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left);
         } else if(view==card2) {
             Toast.makeText(view.getContext(), "houses scanned 100", Toast.LENGTH_SHORT).show();
-            view.getContext().startActivity(i, ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext()).toBundle());
+            startActivity(i);
+            getActivity().overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left);
         } else if (view==card3) {
             Toast.makeText(view.getContext(), "house unscanned", Toast.LENGTH_SHORT).show();
-            view.getContext().startActivity(i, ActivityOptions.makeSceneTransitionAnimation((Activity) view.getContext()).toBundle());
+            startActivity(i);
+            getActivity().overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left);
         }
         else if(view==check_in)
         {
-            try {
+            try{
+                if (hiddenLayout.getVisibility() == View.GONE) {
+                    Animation slideDown = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_down);
+                    hiddenLayout.startAnimation(slideDown);
+                    hiddenLayout.setVisibility(View.VISIBLE);
+                }
+                else {
+                    hiddenLayout.setVisibility(View.GONE);
+                }
                 if (timerService.isTimerRunning()) {
                     timerService.stopTimer();
                     updateHandler.removeCallbacks(updateTimeRunnable);
                     check_in.setText("Check In");
+                    time_show.setText("Time finished:"+timer.getText());
                 } else {
                     timerService.startTimer();
                     updateHandler.post(updateTimeRunnable);
@@ -130,4 +155,3 @@ public class homefragment extends Fragment implements View.OnClickListener{
         }
     }
 }
-

@@ -64,11 +64,7 @@ public class home_login extends AppCompatActivity implements View.OnClickListene
         login.setOnClickListener(this);
         recovery.setOnClickListener(this);
         sign_up.setOnClickListener(this);
-        mAuth = FirebaseAuth.getInstance();
-        muser = mAuth.getCurrentUser();
-        mdata = FirebaseDatabase.getInstance();
-        databaseReference = mdata.getReference();
-        FirebaseUser muser = FirebaseAuth.getInstance().getCurrentUser();
+
         if(what=="Driver")
         {
             email.setHint("*SAT");
@@ -105,7 +101,8 @@ public class home_login extends AppCompatActivity implements View.OnClickListene
                 password.setError("Enter Password with 6 length");}
             else
                 {
-                    firebase_login_method(mail,pass,Admin.class);
+                    mongoDb_login_method(mail,pass,Admin.class);
+                   // firebase_login_method(mail,pass,Admin.class);
                 }
         }
         else if(Objects.equals(what, "Driver"))
@@ -120,7 +117,6 @@ public class home_login extends AppCompatActivity implements View.OnClickListene
             else
             {
                 mongoDb_login_method(sat_inp,pass,Driver.class);
-                //firebase_login_method(input1,pass,Driver.class);
             }
 
         } else if (Objects.equals(what, "User")) {
@@ -140,71 +136,96 @@ public class home_login extends AppCompatActivity implements View.OnClickListene
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 ApiService apiService = retrofit.create(ApiService.class);
-
                 ApiService.LoginRequest request = new ApiService.LoginRequest();
-                request.sat = sat;
-                request.password = pass;
-
-                apiService.loginUser(request).enqueue(new Callback<ApiService.LoginResponse>() {
-                    @Override
-                    public void onResponse(Call<ApiService.LoginResponse> call, Response<ApiService.LoginResponse> response) {
-                        try {
-                            if (response.isSuccessful()) {
-                                Intent i= new Intent(getApplicationContext(),a);
-                                email.setText("");
-                                password.setText("");
-                                sat_glob=sat;
-                                load_data(sat);
-                                p.dismiss();
-                                String message = response.body().message;
-                                Toast.makeText(home_login.this, message, Toast.LENGTH_SHORT).show();
-                                startActivity(i);
-                                finish();
-                            } else {
-                                Toast.makeText(home_login.this, "please enter correct valid details", Toast.LENGTH_SHORT).show();
-                                p.dismiss();
-                                Log.e("API_ERROR", "Error response code: " + response.code());
-                                if (response.errorBody() != null) {
-                                    try {
-                                        Log.e("API_ERROR_BODY", response.errorBody().string());
-                                    } catch (IOException e) {
-                                        Log.e("API_ERROR_BODY", "Error reading error body.", e);
+                if(a==Driver.class) {
+                    request.sat = sat;
+                    request.password = pass;
+                    apiService.loginUser(request).enqueue(new Callback<ApiService.LoginResponse>() {
+                        @Override
+                        public void onResponse(Call<ApiService.LoginResponse> call, Response<ApiService.LoginResponse> response) {
+                            try {
+                                if (response.isSuccessful()) {
+                                    Intent i = new Intent(getApplicationContext(), a);
+                                    email.setText("");
+                                    password.setText("");
+                                    sat_glob = sat;
+                                    load_data(sat);
+                                    p.dismiss();
+                                    String message = response.body().message;
+                                    Toast.makeText(home_login.this, message, Toast.LENGTH_SHORT).show();
+                                    startActivity(i);
+                                    overridePendingTransition(R.anim.swipe_in_right, R.anim.swipe_out_left);
+                                    finish();
+                                } else {
+                                    Toast.makeText(home_login.this, "please enter correct valid details", Toast.LENGTH_SHORT).show();
+                                    p.dismiss();
+                                    Log.e("API_ERROR", "Error response code: " + response.code());
+                                    if (response.errorBody() != null) {
+                                        try {
+                                            Log.e("API_ERROR_BODY", response.errorBody().string());
+                                        } catch (IOException e) {
+                                            Log.e("API_ERROR_BODY", "Error reading error body.", e);
+                                        }
                                     }
                                 }
+                            } catch (Exception e) {
+                                Toast.makeText(home_login.this, "" + e, Toast.LENGTH_SHORT).show();
+                                Log.e("", e.getMessage());
+                                p.dismiss();
                             }
-                        }catch (Exception e){
-                        Toast.makeText(home_login.this, ""+e, Toast.LENGTH_SHORT).show();
-                        Log.e("",e.getMessage());
-                        p.dismiss();}
-                    }
+                        }
 
-                    @Override
-                    public void onFailure(Call<ApiService.LoginResponse> call, Throwable t) {
-                        Toast.makeText(home_login.this, "failed"+t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        @Override
+                        public void onFailure(Call<ApiService.LoginResponse> call, Throwable t) {
+                            Toast.makeText(home_login.this, "failed" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+                else {
+                    request.email = sat;
+                    request.password = pass;
+                    apiService.loginAdmin(request).enqueue(new Callback<ApiService.LoginResponse>() {
+                        @Override
+                        public void onResponse(Call<ApiService.LoginResponse> call, Response<ApiService.LoginResponse> response) {
+                            try {
+                                if (response.isSuccessful()) {
+                                    Intent i = new Intent(getApplicationContext(), a);
+                                    email.setText("");
+                                    password.setText("");
+                                    sat_glob = sat;
+                                   // load_data(sat);
+                                    p.dismiss();
+                                    String message = response.body().message;
+                                    Toast.makeText(home_login.this, message, Toast.LENGTH_SHORT).show();
+                                    startActivity(i);
+                                    finish();
+                                } else {
+                                    Toast.makeText(home_login.this, "please enter correct valid details", Toast.LENGTH_SHORT).show();
+                                    p.dismiss();
+                                    Log.e("API_ERROR", "Error response code: " + response.code());
+                                    if (response.errorBody() != null) {
+                                        try {
+                                            Log.e("API_ERROR_BODY", response.errorBody().string());
+                                        } catch (IOException e) {
+                                            Log.e("API_ERROR_BODY", "Error reading error body.", e);
+                                        }
+                                    }
+                                }
+                            } catch (Exception e) {
+                                Toast.makeText(home_login.this, "" + e, Toast.LENGTH_SHORT).show();
+                                Log.e("", e.getMessage());
+                                p.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ApiService.LoginResponse> call, Throwable t) {
+                            Toast.makeText(home_login.this, "failed" + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
         }
     private void firebase_login_method(String mail,String pass,Class a) {
-//        p.setMessage("Please wait Logging in");
-//        p.setTitle("Login");
-//        p.setCanceledOnTouchOutside(false);
-//        p.show();
-//        mAuth.signInWithEmailAndPassword(mail,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//            @Override
-//            public void onComplete(@NonNull Task<AuthResult> task) {
-//                if(task.isSuccessful()){
-//                Toast.makeText(getApplicationContext(), "successful login", Toast.LENGTH_SHORT).show();
-//                p.dismiss();
-//                load_data(mail);
-//                }
-//                else
-//                {
-//                    p.dismiss();
-//                    Toast.makeText(getApplicationContext(), "please enter correct valid details", Toast.LENGTH_SHORT).show();
-//                }
-//                //load req data of admin
-//            }
-//        });
     }
     private void load_data(String sat) {
         String BASE_URL = BuildConfig.API_KEY;

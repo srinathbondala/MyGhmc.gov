@@ -24,8 +24,16 @@ public interface ApiService {
         public String sat;
     }
     class driver_profile_response {
+        public Long getPhone() {
+            return phone;
+        }
+
+        public void setPhone(Long phone) {
+            this.phone = phone;
+        }
+
         public String name;
-        public Long phoneNumber;
+        public Long phoneNumber,phone;
         public Long sfiNumber;
         public String sat;
         public Long vehicleNumber;
@@ -115,7 +123,13 @@ public interface ApiService {
     Call<LoginResponse> loginUser(@Body LoginRequest request);
     @GET("users/drivers/fetch")
     Call<List<driver_profile_response>> driver_profile(@Query("sat") String satValue);
-    @POST("/driver/register")
-    Call<LoginResponse> driver_register(@Body driver_profile_response dpr);
+    @POST("users/insert")
+    Call<LoginResponse> driver_register(@Body driver_profile_response data);
+    @POST("users/insert")
+    Call<String> driver_register1(@Body driver_profile_response data);
+    @POST("users/admin/login")
+    Call<LoginResponse> loginAdmin(@Body LoginRequest request);
+    @GET("users/admins/fetch")
+    Call<List<driver_profile_response>> admin_profile(@Query("sat") String satValue);
 }
 

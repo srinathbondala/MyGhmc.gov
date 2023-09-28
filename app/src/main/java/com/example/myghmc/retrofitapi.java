@@ -17,6 +17,7 @@ public interface retrofitapi {
     class driver_scanner_data_out {
         public String message;
     }
+
     @POST ("users/driver/house-scanned-info")
     Call<Void> enterData(@Body driver_scanner_data1 request);
 }
