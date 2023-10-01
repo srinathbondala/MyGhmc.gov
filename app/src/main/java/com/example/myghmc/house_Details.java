@@ -49,7 +49,7 @@ public class house_Details extends AppCompatActivity implements View.OnClickList
         int end=(125*100/200);
         back.setOnClickListener(this);
         calender_open.setOnClickListener(this);
-        animateCircularProgressBar(0, end,2000);
+        animateCircularProgressBar(0, end,1500);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         List<house_data> data = new ArrayList<>();
         data.add(new house_data("A101","10:00 AM"));
